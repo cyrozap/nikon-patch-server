@@ -107,7 +107,7 @@ fileChooser.onchange = ->
     reader = new FileReader()
     reader.onprogress = fileLoadProgress
     reader.onerror = fileLoadError
-    reader.onload = fileLoaded
+    reader.onload = fileLoaded firmwareFile
     reader.readAsArrayBuffer firmwareFile
 
   return
@@ -122,18 +122,24 @@ fileLoadError = (evt) ->
   if evt.target.error.name == "NotReadableError"
     console.log "Error: The file could not be read."
 
-fileLoaded = (evt) ->
-  firmwareData = evt.target.result
-  console.log "File loaded. Length: " + firmwareData.byteLength + " bytes."
+fileLoaded = (firmwareFile) ->
+  return (evt) ->
+    firmwareData = evt.target.result
+    console.log "File loaded. Length: " + firmwareData.byteLength + " bytes."
 
-  # Create a new Firmware object with the loaded data
-  firmware = new Firmware firmwareData
+    # Generate the output file name based on the input file name
+    re = /(?:(.*)(\.[^.]+))?$/
+    fileNameParts = re.exec(firmwareFile.name)
+    newFileName = fileNameParts[1] + "_decrypted" + fileNameParts[2]
 
-  # Get the MD5 hash of the encrypted data
-  console.log firmware.getHash()
+    # Create a new Firmware object with the loaded data
+    firmware = new Firmware firmwareData
 
-  # Decrypt the loaded firmware
-  firmware.decrypt()
+    # Get the MD5 hash of the encrypted data
+    console.log firmware.getHash()
 
-  # Save the decrypted data to a file
-  saveFile firmware.decryptedData, "decrypted.bin"
+    # Decrypt the loaded firmware
+    firmware.decrypt()
+
+    # Save the decrypted data to a file
+    saveFile firmware.decryptedData, newFileName
