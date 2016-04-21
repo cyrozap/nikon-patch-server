@@ -124,8 +124,8 @@ saveFile = (data, fileName) ->
   link.click()
 
   # Cleanup
-  link.parentNode.removeChild(link);
-  window.URL.revokeObjectURL(url)
+  link.parentNode.removeChild link
+  window.URL.revokeObjectURL url
 
   return
 
