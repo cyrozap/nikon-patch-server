@@ -170,7 +170,7 @@ fileLoaded = (firmwareFile) ->
     # Generate the output file name based on the input file name
     re = /(?:(.*)(\.[^.]+))?$/
     fileNameParts = re.exec(firmwareFile.name)
-    newFileName = fileNameParts[1] + "_decrypted" + fileNameParts[2]
+    decryptedFileName = fileNameParts[1] + "_decrypted" + fileNameParts[2]
 
     # Create a new Firmware object with the loaded data
     firmware = new Firmware firmwareData
@@ -187,4 +187,4 @@ fileLoaded = (firmwareFile) ->
     firmware.decrypt()
 
     # Save the decrypted data to a file
-    saveFile firmware.decryptedData, newFileName
+    saveFile firmware.decryptedData, firmwareFile.name
