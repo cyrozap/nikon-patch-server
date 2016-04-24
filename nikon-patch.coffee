@@ -129,10 +129,13 @@ saveFile = (data, fileName) ->
 
   return
 
+fileChooserContainer = document.getElementById "fileChooserContainer"
 fileChooser = document.getElementById "fileChooser"
-fileChooser.onchange = ->
+fileOkButton = document.getElementById "fileOkButton"
+
+fileOkButton.onclick = ->
   # Get the first file in the file list
-  firmwareFile = @files[0]
+  firmwareFile = fileChooser.files[0]
 
   # If a file was selected, try to read it
   if firmwareFile
@@ -158,6 +161,9 @@ fileLoaded = (firmwareFile) ->
   return (evt) ->
     firmwareData = evt.target.result
     console.log "File loaded. Length: " + firmwareData.byteLength + " bytes."
+
+    # Hide the file chooser
+    fileChooserContainer.style = "display: none"
 
     # Generate the output file name based on the input file name
     re = /(?:(.*)(\.[^.]+))?$/
