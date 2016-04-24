@@ -132,6 +132,7 @@ saveFile = (data, fileName) ->
 fileChooserContainer = document.getElementById "fileChooserContainer"
 fileChooser = document.getElementById "fileChooser"
 fileOkButton = document.getElementById "fileOkButton"
+patchSelectorContainer = document.getElementById "patchSelectorContainer"
 
 fileOkButton.onclick = ->
   # Get the first file in the file list
@@ -162,8 +163,9 @@ fileLoaded = (firmwareFile) ->
     firmwareData = evt.target.result
     console.log "File loaded. Length: " + firmwareData.byteLength + " bytes."
 
-    # Hide the file chooser
+    # Hide the file chooser and show the patch selector
     fileChooserContainer.style = "display: none"
+    patchSelectorContainer.style = ""
 
     # Generate the output file name based on the input file name
     re = /(?:(.*)(\.[^.]+))?$/
